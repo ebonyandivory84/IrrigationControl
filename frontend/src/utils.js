@@ -24,4 +24,9 @@ export const TRIGGER_LABELS = {
   manual: 'Manuell',
   schedule: 'Zeitplan',
   auto: 'Automatik',
+  'auto-morning': 'Morgenlauf',
+  'auto-interim': 'Zwischenwässerung',
+  'auto-catchup': 'Nachtrag',
+  'auto-evening': 'Abendlauf',
+  'auto-fallback': 'Abend-Fallback',
 };

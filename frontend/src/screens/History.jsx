@@ -38,7 +38,7 @@ export default function History() {
                       {entry.aborted && !entry.skipped && ' — abgebrochen'}
                     </strong>
                     <span>
-                      {entry.skipped
+                      {entry.skipped || !entry.zonesPlanned
                         ? entry.reason
                         : `${entry.zonesCompleted}/${entry.zonesPlanned} Zonen`}
                     </span>

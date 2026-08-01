@@ -25,6 +25,12 @@ class IrrigationControl extends utils.Adapter {
         this.engine = new IrrigationEngine(this);
         this.scheduler = new Scheduler(this, this.engine, this.weather, this.history);
 
+        await this.setObjectNotExistsAsync(this.namespace, {
+            type: 'meta',
+            common: { name: 'irrigation-control files', type: 'meta.user' },
+            native: {}
+        });
+
         await this.engine.init();
         await this.scheduler.init();
         await this.weather.init();
