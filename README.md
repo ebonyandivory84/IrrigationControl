@@ -5,7 +5,7 @@ ioBroker-Adapter für die Rasenbewässerung mit eigener WebUI (React, Liquid-Gla
 ## Funktionsumfang
 
 - **Zeitplan**: Wochentage, Startzeit, eine globale Zyklusdauer je Zone
-- **Automatik**: wetterbasiert (Temperatur, Sonneneinstrahlung, Regen aktuell/Vorhersage), 1–2 Läufe/Tag
+- **Automatik**: wetterbasiert (Temperatur, Sonneneinstrahlung, Regen aktuell/stündlich aktualisierte Vorhersage), bevorzugt morgens (04:00) / abends (22:00) wegen geringerer Verdunstung, optionale dritte hitzegetriggerte Zwischenwässerung, automatischer Regen-Fallback-Check abends falls sich die Vorhersage als falsch herausstellt
 - **Manuelle Steuerung** + Notaus (`control.emergencyStop`, sperrt alle Läufe bis Reset)
 - **WebUI**: Dashboard, Zeitplan, Automatik, Einstellungen (Hintergrundbild, Unschärfe/Dimm-Regler, Zonen-Umbenennung), Verlauf
 

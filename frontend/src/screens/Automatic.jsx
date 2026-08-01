@@ -108,8 +108,8 @@ export default function Automatic({ settings, onUpdate }) {
         </div>
         <div className="field">
           <span className="field-label">Läufe pro Tag</span>
-          <div className="weekday-picker" style={{ gridTemplateColumns: 'repeat(2, 1fr)' }}>
-            {[1, 2].map((n) => (
+          <div className="weekday-picker" style={{ gridTemplateColumns: 'repeat(3, 1fr)' }}>
+            {[1, 2, 3].map((n) => (
               <button
                 key={n}
                 type="button"
@@ -121,6 +121,7 @@ export default function Automatic({ settings, onUpdate }) {
               </button>
             ))}
           </div>
+          {maxRuns >= 3 && <p className="field-hint">Dritter Lauf: einmalige Zwischenwässerung tagsüber, sobald die oben eingestellte Hitze-/Sonnenschwelle erreicht wird.</p>}
         </div>
 
         <div className="field">
@@ -128,22 +129,25 @@ export default function Automatic({ settings, onUpdate }) {
           <input
             type="time"
             className="input"
-            value={settings.autoMorningTime || '05:00'}
+            value={settings.autoMorningTime || '04:00'}
             onChange={(e) => onUpdate({ autoMorningTime: e.target.value })}
           />
         </div>
 
-        {maxRuns >= 2 && (
-          <div className="field">
-            <span className="field-label">Abends (nur bei Hitze/Sonne-Trigger)</span>
-            <input
-              type="time"
-              className="input"
-              value={settings.autoEveningTime || '17:00'}
-              onChange={(e) => onUpdate({ autoEveningTime: e.target.value })}
-            />
-          </div>
-        )}
+        <div className="field">
+          <span className="field-label">Abends</span>
+          <input
+            type="time"
+            className="input"
+            value={settings.autoEveningTime || '22:00'}
+            onChange={(e) => onUpdate({ autoEveningTime: e.target.value })}
+          />
+          <p className="field-hint">
+            {maxRuns >= 2
+              ? 'Läuft immer regulär bei 2+ Läufen/Tag; springt zusätzlich ein, falls morgens wegen Regenmeldung ausgesetzt wurde, es bis dahin aber tatsächlich nicht geregnet hat.'
+              : 'Regen-Fallback: Wenn morgens wegen Regenmeldung ausgesetzt wurde, es bis dahin aber tatsächlich nicht geregnet hat, wird zu dieser Zeit trotzdem gewässert.'}
+          </p>
+        </div>
       </GlassCard>
     </>
   );

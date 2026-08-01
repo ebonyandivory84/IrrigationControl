@@ -9,8 +9,12 @@
       "en": "Automated lawn irrigation with weather logic and a dedicated WebUI",
       "de": "Automatisierte Rasenbewässerung mit Wetter-Logik und eigener WebUI"
     },
-    "version": "0.1.0",
+    "version": "0.2.0",
     "news": {
+      "0.2.0": {
+        "en": "Smarter automatic mode: hourly forecast, catch-up run forecast improves, evening rain fallback, optional third heat-triggered run; UI centering fix",
+        "de": "Automatik smarter: stündliche Vorhersage, Nachtrag bei besserer Prognose, Abend-Regen-Fallback, optionale dritte hitzegetriggerte Zwischenwässerung; UI-Zentrierung korrigiert"
+      },
       "0.1.0": {
         "en": "initial release",
         "de": "Erstveröffentlichung"
@@ -68,7 +72,6 @@
     "weatherStaleMinutes": 60,
     "latitude": 49.2354,
     "longitude": 6.9969,
-    "forecastFetchHour": 5,
     "httpPort": 8112,
     "maxTotalRuntimeSec": 5400
   },

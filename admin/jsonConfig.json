@@ -102,13 +102,6 @@
       "label": "Längengrad (für Regen-Vorhersage)",
       "xs": 12,
       "sm": 6
-    },
-    "forecastFetchHour": {
-      "type": "number",
-      "label": "Vorhersage-Abruf um (Stunde, 0-23)",
-      "newLine": true,
-      "xs": 12,
-      "sm": 6
     }
   }
 }
