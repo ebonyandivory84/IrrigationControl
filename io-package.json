@@ -26,7 +26,12 @@
     "dataSource": "poll",
     "icon": "irrigation-control.png",
     "extIcon": "https://raw.githubusercontent.com/ebonyandivory84/IrrigationControl/main/admin/irrigation-control.png",
-    "localLink": "http://%ip%:%native.httpPort%/",
+    "localLinks": {
+      "WebUI": {
+        "link": "http://%ip%:%native.httpPort%/",
+        "name": "Bewässerung WebUI"
+      }
+    },
     "keywords": ["irrigation", "bewaesserung", "garten", "weather"],
     "license": "MIT",
     "readme": "https://github.com/ebonyandivory84/IrrigationControl/blob/main/README.md",
