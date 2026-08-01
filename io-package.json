@@ -57,7 +57,7 @@
       }
     ],
     "rainCurrentDP": "sainlogic.0.weather.current.rain",
-    "tempCurrentDP": "sainlogic.0.weather.current.temperature",
+    "tempCurrentDP": "sainlogic.0.weather.current.outdoortemp",
     "sunCurrentDP": "sainlogic.0.weather.current.solarradiation",
     "weatherStaleMinutes": 60,
     "latitude": 49.2354,
