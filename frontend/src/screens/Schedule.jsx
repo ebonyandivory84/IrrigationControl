@@ -26,6 +26,21 @@ export default function Schedule({ settings, onUpdate }) {
       )}
 
       <GlassCard>
+        <div className="field-row">
+          <div>
+            <div className="card-title">Zeitplan aktiv</div>
+            <p className="card-sub">Ohne diesen Schalter läuft nichts automatisch</p>
+          </div>
+          <button
+            type="button"
+            className={`toggle ${settings.scheduleEnabled ? 'is-on' : ''}`}
+            onClick={() => onUpdate({ scheduleEnabled: !settings.scheduleEnabled })}
+            aria-pressed={!!settings.scheduleEnabled}
+          />
+        </div>
+      </GlassCard>
+
+      <GlassCard className={settings.scheduleEnabled ? '' : 'is-disabled'} style={settings.scheduleEnabled ? {} : { opacity: 0.5, pointerEvents: 'none' }}>
         <div className="field">
           <span className="field-label">Wochentage</span>
           <div className="weekday-picker">

@@ -38,3 +38,5 @@
 
 ## Wichtige Entscheidungen (Changelog)
 - `2026-08-02` — Zonen-Modell geklärt: physische Zonen über Gardena-Verteiler, nicht Soak-Cycle. Eine globale Zyklusdauer für alle Zonen (nicht pro Zone). Wochentage als 7 Einzel-Checkboxen, global für beide Verteiler.
+- `2026-08-02` — Backend bewusst in plain JS statt TypeScript (kleiner Scope, kein Build-Schritt für den Adapter selbst nötig).
+- `2026-08-02` — Sicherheits-Fix vor Deploy: `settings.scheduleEnabled` als expliziter Zeitplan-Ein/Aus-Schalter ergänzt (Default `false`). Ohne diesen Schalter wären bei Werks-Defaults (alle Wochentage `true`, Startzeit 05:00) nach dem Deploy sofort echte Läufe erfolgt — Verstoß gegen "kein automatischer Zugriff auf Produktions-Ventile ohne Rücksprache".
