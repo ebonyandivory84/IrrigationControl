@@ -84,7 +84,7 @@ export default function Schedule({ settings, onUpdate }) {
               onUpdate({ cycleDurationSec: m * 60 }, { debounceMs: 500 });
             }}
           />
-          <p className="field-hint">Minuten je Zone — gilt für alle Zonen gleich, um die Verteiler nicht zu desynchronisieren.</p>
+          <p className="field-hint">Minuten je Zone — globale Einstellung, gilt auch für den Automatik-Modus. Gleiche Dauer für alle Zonen, um die Verteiler nicht zu desynchronisieren.</p>
         </div>
       </GlassCard>
     </>

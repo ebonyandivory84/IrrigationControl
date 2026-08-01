@@ -4,6 +4,7 @@ export default function Automatic({ settings, onUpdate }) {
   if (!settings) return <div className="loading-state">Lade Einstellungen …</div>;
 
   const maxRuns = settings.autoMaxRunsPerDay || 1;
+  const cycleMinutes = Math.round((settings.cycleDurationSec || 600) / 60);
 
   return (
     <>
@@ -147,6 +148,22 @@ export default function Automatic({ settings, onUpdate }) {
               ? 'Läuft immer regulär bei 2+ Läufen/Tag; springt zusätzlich ein, falls morgens wegen Regenmeldung ausgesetzt wurde, es bis dahin aber tatsächlich nicht geregnet hat.'
               : 'Regen-Fallback: Wenn morgens wegen Regenmeldung ausgesetzt wurde, es bis dahin aber tatsächlich nicht geregnet hat, wird zu dieser Zeit trotzdem gewässert.'}
           </p>
+        </div>
+
+        <div className="field">
+          <span className="field-label">Zyklusdauer pro Zone</span>
+          <input
+            type="number"
+            className="input"
+            min="1"
+            max="120"
+            value={cycleMinutes}
+            onChange={(e) => {
+              const m = Math.max(1, Number(e.target.value) || 1);
+              onUpdate({ cycleDurationSec: m * 60 }, { debounceMs: 500 });
+            }}
+          />
+          <p className="field-hint">Minuten je Zone — globale Einstellung, gilt auch für den Zeitplan-Modus.</p>
         </div>
       </GlassCard>
     </>
