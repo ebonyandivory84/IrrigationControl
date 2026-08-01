@@ -1,0 +1,71 @@
+{
+  "common": {
+    "name": "irrigation-control",
+    "titleLang": {
+      "en": "Irrigation Control",
+      "de": "Bewässerungssteuerung"
+    },
+    "desc": {
+      "en": "Automated lawn irrigation with weather logic and a dedicated WebUI",
+      "de": "Automatisierte Rasenbewässerung mit Wetter-Logik und eigener WebUI"
+    },
+    "version": "0.1.0",
+    "news": {
+      "0.1.0": {
+        "en": "initial release",
+        "de": "Erstveröffentlichung"
+      }
+    },
+    "title": "Irrigation Control",
+    "authors": ["Sebastian Holländer"],
+    "platform": "Javascript/Node.js",
+    "mode": "daemon",
+    "type": "climate-control",
+    "compact": true,
+    "connectionType": "local",
+    "dataSource": "poll",
+    "icon": "irrigation-control.png",
+    "extIcon": "https://raw.githubusercontent.com/ebonyandivory84/IrrigationControl/main/admin/irrigation-control.png",
+    "keywords": ["irrigation", "bewaesserung", "garten", "weather"],
+    "license": "MIT",
+    "readme": "https://github.com/ebonyandivory84/IrrigationControl/blob/main/README.md",
+    "loglevel": "info",
+    "enabled": true,
+    "adminUI": {
+      "config": "json"
+    },
+    "dependencies": [
+      {
+        "js-controller": ">=5.0.0"
+      }
+    ]
+  },
+  "native": {
+    "pumpDP": "zigbee.0.f0d1b8be240b0bd8.state",
+    "pumpLeadTimeMs": 2000,
+    "pauseBetweenZonesMs": 20000,
+    "valveGroups": [
+      {
+        "name": "Verteiler A",
+        "valveDP": "zigbee.0.28dba7fffe6d0211.state",
+        "zoneCount": 6
+      },
+      {
+        "name": "Verteiler B",
+        "valveDP": "zigbee.0.28dba7fffe6d020c.state",
+        "zoneCount": 2
+      }
+    ],
+    "rainCurrentDP": "sainlogic.0.weather.current.rain",
+    "tempCurrentDP": "sainlogic.0.weather.current.temperature",
+    "sunCurrentDP": "sainlogic.0.weather.current.solarradiation",
+    "weatherStaleMinutes": 60,
+    "latitude": 49.2354,
+    "longitude": 6.9969,
+    "forecastFetchHour": 5,
+    "httpPort": 8112,
+    "maxTotalRuntimeSec": 5400
+  },
+  "objects": [],
+  "instanceObjects": []
+}

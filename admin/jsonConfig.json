@@ -1,0 +1,114 @@
+{
+  "type": "panel",
+  "i18n": true,
+  "items": {
+    "_headerHw": {
+      "type": "header",
+      "text": "Hardware-Zuordnung",
+      "size": 3
+    },
+    "pumpDP": {
+      "type": "text",
+      "label": "Datenpunkt Pumpe",
+      "newLine": true,
+      "xs": 12,
+      "sm": 6
+    },
+    "httpPort": {
+      "type": "number",
+      "label": "WebUI-Port",
+      "xs": 12,
+      "sm": 6
+    },
+    "pumpLeadTimeMs": {
+      "type": "number",
+      "label": "Pumpen-Vorlauf (ms)",
+      "newLine": true,
+      "xs": 12,
+      "sm": 6
+    },
+    "pauseBetweenZonesMs": {
+      "type": "number",
+      "label": "Pause zwischen Zonen (ms)",
+      "xs": 12,
+      "sm": 6
+    },
+    "maxTotalRuntimeSec": {
+      "type": "number",
+      "label": "Sicherheits-Timeout Gesamtlauf (s)",
+      "newLine": true,
+      "xs": 12,
+      "sm": 6
+    },
+
+    "_headerValves": {
+      "type": "header",
+      "text": "Ventile / Verteiler",
+      "size": 3,
+      "newLine": true
+    },
+    "valveGroups": {
+      "type": "table",
+      "label": "Ventilgruppen (je 1 Zeile = 1 Ventil + Verteiler)",
+      "newLine": true,
+      "items": [
+        { "type": "text", "attr": "name", "title": "Name", "width": "30%" },
+        { "type": "text", "attr": "valveDP", "title": "Ventil-Datenpunkt", "width": "45%" },
+        { "type": "number", "attr": "zoneCount", "title": "Anzahl Zonen am Verteiler", "width": "25%" }
+      ]
+    },
+
+    "_headerWeather": {
+      "type": "header",
+      "text": "Wetter-Datenpunkte",
+      "size": 3,
+      "newLine": true
+    },
+    "rainCurrentDP": {
+      "type": "text",
+      "label": "Regen aktuell (Datenpunkt)",
+      "newLine": true,
+      "xs": 12,
+      "sm": 6
+    },
+    "tempCurrentDP": {
+      "type": "text",
+      "label": "Temperatur aktuell (Datenpunkt)",
+      "xs": 12,
+      "sm": 6
+    },
+    "sunCurrentDP": {
+      "type": "text",
+      "label": "Sonneneinstrahlung aktuell (Datenpunkt)",
+      "newLine": true,
+      "xs": 12,
+      "sm": 6
+    },
+    "weatherStaleMinutes": {
+      "type": "number",
+      "label": "Wetterdaten gelten als veraltet nach (Minuten)",
+      "xs": 12,
+      "sm": 6
+    },
+    "latitude": {
+      "type": "number",
+      "label": "Breitengrad (für Regen-Vorhersage)",
+      "newLine": true,
+      "xs": 12,
+      "sm": 6
+    },
+    "longitude": {
+      "type": "number",
+      "label": "Längengrad (für Regen-Vorhersage)",
+      "xs": 12,
+      "sm": 6
+    },
+    "forecastFetchHour": {
+      "type": "number",
+      "label": "Vorhersage-Abruf um (Stunde, 0-23)",
+      "newLine": true,
+      "xs": 12,
+      "sm": 6
+    }
+  }
+}

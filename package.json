@@ -1,0 +1,26 @@
+{
+  "name": "iobroker.irrigation-control",
+  "version": "0.1.0",
+  "description": "Automatisierte Rasenbewässerung mit Wetter-Logik und eigener WebUI",
+  "author": "Sebastian Holländer",
+  "license": "MIT",
+  "homepage": "https://github.com/ebonyandivory84/IrrigationControl",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ebonyandivory84/IrrigationControl.git"
+  },
+  "engines": {
+    "node": ">=18"
+  },
+  "main": "main.js",
+  "keywords": ["ioBroker", "irrigation", "bewaesserung", "smarthome"],
+  "dependencies": {
+    "@iobroker/adapter-core": "^3.4.3",
+    "express": "^4.21.2",
+    "multer": "^2.2.0"
+  },
+  "scripts": {
+    "build:frontend": "cd frontend && npm install && npm run build && node ../scripts/copy-www.js",
+    "test": "node --check main.js && node --check lib/irrigationEngine.js && node --check lib/scheduler.js && node --check lib/weather.js && node --check lib/history.js && node --check lib/webserver.js"
+  }
+}

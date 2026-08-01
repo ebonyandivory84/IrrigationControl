@@ -1,0 +1,102 @@
+:root {
+  color-scheme: dark;
+  --teal: #2dd4bf;
+  --teal-dim: #0f766e;
+  --amber: #f59e0b;
+  --amber-dim: #92400e;
+  --slate-ink: #e6f1f0;
+  --slate-muted: rgba(230, 241, 240, 0.62);
+  --danger: #f87171;
+
+  --glass-bg: rgba(18, 30, 28, 0.42);
+  --glass-bg-strong: rgba(18, 30, 28, 0.62);
+  --glass-border: rgba(255, 255, 255, 0.16);
+  --glass-blur: 22px;
+  --glass-radius: 22px;
+  --glass-shadow: 0 12px 40px rgba(0, 0, 0, 0.35);
+
+  --nav-height: 72px;
+  --content-max: 640px;
+
+  font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Inter', 'Segoe UI', sans-serif;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html, body, #root {
+  height: 100%;
+  margin: 0;
+}
+
+body {
+  color: var(--slate-ink);
+  overflow-x: hidden;
+}
+
+button {
+  font-family: inherit;
+}
+
+::selection {
+  background: rgba(45, 212, 191, 0.35);
+}
+
+.app-shell {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.app-main {
+  flex: 1;
+  padding: max(20px, env(safe-area-inset-top)) 16px calc(var(--nav-height) + 24px);
+  max-width: var(--content-max);
+  margin: 0 auto;
+  width: 100%;
+}
+
+.glass-panel {
+  background: var(--glass-bg);
+  backdrop-filter: blur(var(--glass-blur)) saturate(140%);
+  -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(140%);
+  border: 1px solid var(--glass-border);
+  border-radius: var(--glass-radius);
+  box-shadow: var(--glass-shadow);
+}
+
+.page-title {
+  font-size: 22px;
+  font-weight: 650;
+  letter-spacing: -0.01em;
+  margin: 4px 0 16px;
+  text-shadow: 0 1px 6px rgba(0, 0, 0, 0.35);
+}
+
+.section-label {
+  font-size: 12px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--slate-muted);
+  margin: 22px 2px 10px;
+}
+
+.section-label:first-child {
+  margin-top: 0;
+}
+
+@media (min-width: 900px) {
+  :root {
+    --nav-height: 0px;
+  }
+  .app-shell {
+    flex-direction: row;
+  }
+  .app-main {
+    padding: 32px 32px 32px calc(220px + 32px);
+    max-width: 760px;
+    margin: 0 0 0 0;
+  }
+}
