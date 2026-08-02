@@ -176,7 +176,7 @@ export default function Dashboard({ status, settings, busy, onStart, onStop, onE
             </div>
             <div className="metric">
               <SunIcon />
-              <strong>{status.weather.sunForecastMJm2 != null ? `${status.weather.sunForecastMJm2}MJ/m²` : '—'}</strong>
+              <strong>{status.weather.sunForecastMJm2 != null ? `${(status.weather.sunForecastMJm2 / 3.6).toFixed(1)}kWh/m²` : '—'}</strong>
               <span>Sonnenstrahlung</span>
             </div>
           </div>
@@ -189,12 +189,12 @@ export default function Dashboard({ status, settings, busy, onStart, onStop, onE
           <span className="card-title">Zonen</span>
           <span className="card-sub">{(status.zones || []).length} gesamt</span>
         </div>
-        <div className="zone-list">
+        <div className="zone-list zone-list-compact">
           {(status.zones || []).map((zone) => (
             <div key={zone.index} className={`zone-row ${status.running && status.currentZone === zone.index ? 'is-active' : ''}`}>
               <span className="zone-dot" />
-              <span>{zoneNames[zone.index] || `Zone ${zone.index}`}</span>
-              <span style={{ marginLeft: 'auto', color: 'var(--slate-muted)', fontSize: 12 }}>{zone.groupName}</span>
+              <span className="zone-name">{zoneNames[zone.index] || `Zone ${zone.index}`}</span>
+              <span className="zone-group">{zone.groupName ? zone.groupName.slice(-1) : ''}</span>
             </div>
           ))}
         </div>

@@ -9,8 +9,12 @@
       "en": "Automated lawn irrigation with weather logic and a dedicated WebUI",
       "de": "Automatisierte Rasenbewässerung mit Wetter-Logik und eigener WebUI"
     },
-    "version": "0.3.1",
+    "version": "0.3.2",
     "news": {
+      "0.3.2": {
+        "en": "Zones card is now a compact 2-column grid; forecast solar radiation shown in kWh/m² instead of MJ/m²",
+        "de": "Zonen-Card jetzt als kompaktes 2-Spalten-Raster; Sonnenstrahlung-Vorhersage in kWh/m² statt MJ/m²"
+      },
       "0.3.1": {
         "en": "Fixed \"Open WebUI\" link in the admin instance list (wrong placeholder syntax); weather card now explains in plain text which decision the automatic mode makes based on current conditions and forecast",
         "de": "\"WebUI öffnen\"-Link in der Admin-Instanzübersicht repariert (falsche Platzhalter-Syntax); Wetter-Card erklärt jetzt in Textform, welche Entscheidung die Automatik anhand von aktuellen Werten und Vorhersage trifft"
