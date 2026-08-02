@@ -5,6 +5,59 @@ import { formatClock, formatDateTime, TRIGGER_LABELS } from '../utils';
 const RADIUS = 40;
 const CIRCUMFERENCE = 2 * Math.PI * RADIUS;
 
+// Beschreibt einen vorhersagebasierten Lauf (Morgen/Abend): Reihenfolge der Prüfungen
+// entspricht exakt der Backend-Logik in lib/scheduler.js (_tickAutomatic) — erst Hitze-/
+// Sonnenschwelle (Vorhersage), dann aktueller Regen, dann Regenwahrscheinlichkeit.
+function describeForecastRun(label, time, weather, th, fallbackEveningTime) {
+  const heatGateMet =
+    (weather.tempForecastMaxC != null && weather.tempForecastMaxC >= th.tempThreshold) ||
+    (weather.sunForecastMJm2 != null && weather.sunForecastMJm2 >= th.sunThresholdMJm2);
+
+  if (!heatGateMet) {
+    const sunKwh = (th.sunThresholdMJm2 / 3.6).toFixed(1);
+    return `${label} (${time} Uhr) wird ausgesetzt – weder die Temperaturschwelle (${th.tempThreshold}°C) noch die Sonnenschwelle (${sunKwh} kWh/m²) werden laut Vorhersage erreicht.`;
+  }
+
+  if (weather.rainCurrentMm != null && weather.rainCurrentMm >= th.rainCurrentThreshold) {
+    return `${label} entfällt – aktueller Regen (${weather.rainCurrentMm}mm) liegt über dem Schwellenwert von ${th.rainCurrentThreshold}mm.`;
+  }
+
+  if (weather.rainForecastPct != null && weather.rainForecastPct >= th.rainForecastThreshold) {
+    let text = `${label} (${time} Uhr) wird ausgesetzt – Regenwahrscheinlichkeit (${weather.rainForecastPct}%) liegt über dem Schwellenwert von ${th.rainForecastThreshold}%.`;
+    if (fallbackEveningTime) {
+      text += ` Bessert sich die Vorhersage im Tagesverlauf, folgt ein Nachtrag; andernfalls prüft ein Abend-Fallback um ${fallbackEveningTime} Uhr den tatsächlich gefallenen Regen.`;
+    }
+    return text;
+  }
+
+  const rainNowText = weather.rainCurrentMm != null ? `${weather.rainCurrentMm}mm` : 'unbekannt';
+  const rainSoonText = weather.rainForecastPct != null ? `${weather.rainForecastPct}%` : 'unbekannt';
+  return `${label} um ${time} Uhr geplant – aktueller Regen (${rainNowText}) liegt unter dem Schwellenwert (${th.rainCurrentThreshold}mm), Regenwahrscheinlichkeit (${rainSoonText}) unter dem Schwellenwert (${th.rainForecastThreshold}%).`;
+}
+
+// Beschreibt die Zwischenwässerung: live gemessene Werte statt Vorhersage, den ganzen Tag
+// über neu geprüft — ein noch nicht erreichter Schwellenwert ist daher kein endgültiges
+// Aussetzen, sondern "folgt später".
+function describeInterimRun(weather, th) {
+  const heatGateMet =
+    (weather.tempCurrentC != null && weather.tempCurrentC >= th.tempThreshold) ||
+    (weather.sunCurrentWm2 != null && weather.sunCurrentWm2 >= th.sunThresholdWm2);
+
+  if (!heatGateMet) {
+    return `Zwischenwässerung folgt, sobald aktuell ${th.tempThreshold}°C oder ${th.sunThresholdWm2} W/m² überschritten werden (aktuell ${weather.tempCurrentC ?? '—'}°C / ${weather.sunCurrentWm2 ?? '—'} W/m²).`;
+  }
+
+  if (weather.rainCurrentMm != null && weather.rainCurrentMm >= th.rainCurrentThreshold) {
+    return `Zwischenwässerung entfällt – aktueller Regen (${weather.rainCurrentMm}mm) liegt über dem Schwellenwert von ${th.rainCurrentThreshold}mm.`;
+  }
+
+  if (weather.rainForecastPct != null && weather.rainForecastPct >= th.rainForecastThreshold) {
+    return `Zwischenwässerung wird ausgesetzt – Regenwahrscheinlichkeit (${weather.rainForecastPct}%) liegt über dem Schwellenwert von ${th.rainForecastThreshold}%.`;
+  }
+
+  return `Zwischenwässerung wird ausgelöst, sobald die Hitze-/Sonnenschwelle (${th.tempThreshold}°C / ${th.sunThresholdWm2} W/m²) erreicht ist, falls heute noch nicht gelaufen.`;
+}
+
 function buildAutomatikNote(settings, weather) {
   if (!settings || !settings.automaticMode) {
     return 'Automatik ist deaktiviert – die Bewässerung folgt dem festen Zeitplan, unabhängig von der Wettervorhersage.';
@@ -13,31 +66,62 @@ function buildAutomatikNote(settings, weather) {
     return 'Wetterdaten sind veraltet – die Automatik pausiert Auslösungen, bis wieder aktuelle Daten vorliegen.';
   }
 
-  const rainCurrentThreshold = settings.autoRainCurrentThresholdMm ?? 0.15;
-  const rainForecastThreshold = settings.autoRainForecastThresholdPct ?? 50;
-  const morningTime = settings.autoMorningTime || '04:00';
-  const eveningTime = settings.autoEveningTime || '22:00';
-  const maxRuns = settings.autoMaxRunsPerDay || 1;
+  const morningEnabled = !!settings.autoMorningEnabled;
+  const eveningEnabled = !!settings.autoEveningEnabled;
+  const interimEnabled = !!settings.autoInterimEnabled;
 
-  const rainNow = weather.rainCurrentMm != null && weather.rainCurrentMm >= rainCurrentThreshold;
-  const rainSoon = weather.rainForecastPct != null && weather.rainForecastPct >= rainForecastThreshold;
-
-  if (rainNow) {
-    return `Keine Bewässerung geplant – aktueller Regen (${weather.rainCurrentMm}mm) liegt über dem Schwellenwert von ${rainCurrentThreshold}mm.`;
-  }
-  if (rainSoon) {
-    return `Morgenlauf (${morningTime} Uhr) wird ausgesetzt – Regenwahrscheinlichkeit (${weather.rainForecastPct}%) liegt über dem Schwellenwert von ${rainForecastThreshold}%. Bessert sich die Vorhersage im Tagesverlauf, folgt ein Nachtrag; andernfalls prüft ein Abend-Fallback um ${eveningTime} Uhr den tatsächlich gefallenen Regen.`;
+  if (!morningEnabled && !eveningEnabled && !interimEnabled) {
+    return 'Automatik ist aktiv, aber es ist kein Lauf konfiguriert – aktiviere mindestens einen Lauf auf der Automatik-Seite.';
   }
 
-  const runs = [`Morgenlauf um ${morningTime} Uhr`];
-  if (maxRuns >= 2) runs.push(`Abendlauf um ${eveningTime} Uhr`);
-  const rainNowText = weather.rainCurrentMm != null ? `${weather.rainCurrentMm}mm` : 'unbekannt';
-  const rainSoonText = weather.rainForecastPct != null ? `${weather.rainForecastPct}%` : 'unbekannt';
-  let note = `Bewässerung geplant: ${runs.join(' und ')} – aktueller Regen (${rainNowText}) liegt unter dem Schwellenwert (${rainCurrentThreshold}mm), Regenwahrscheinlichkeit (${rainSoonText}) unter dem Schwellenwert (${rainForecastThreshold}%).`;
-  if (maxRuns >= 3) {
-    note += ` Zusätzlich eine hitzegetriggerte Zwischenwässerung, sobald ${settings.autoTempThresholdC ?? 28}°C oder ${settings.autoSunThresholdWm2 ?? 600} W/m² überschritten werden.`;
+  const parts = [];
+
+  if (morningEnabled) {
+    parts.push(
+      describeForecastRun(
+        'Morgenlauf',
+        settings.autoMorningTime || '04:00',
+        weather,
+        {
+          tempThreshold: settings.autoMorningTempThresholdC ?? 10,
+          sunThresholdMJm2: settings.autoMorningSunThresholdMJm2 ?? 5,
+          rainCurrentThreshold: settings.autoMorningRainCurrentThresholdMm ?? 0.15,
+          rainForecastThreshold: settings.autoMorningRainForecastThresholdPct ?? 50
+        },
+        settings.autoEveningTime || '22:00'
+      )
+    );
   }
-  return note;
+
+  if (eveningEnabled) {
+    parts.push(
+      describeForecastRun(
+        'Abendlauf',
+        settings.autoEveningTime || '22:00',
+        weather,
+        {
+          tempThreshold: settings.autoEveningTempThresholdC ?? 25,
+          sunThresholdMJm2: settings.autoEveningSunThresholdMJm2 ?? 15,
+          rainCurrentThreshold: settings.autoEveningRainCurrentThresholdMm ?? 0.1,
+          rainForecastThreshold: settings.autoEveningRainForecastThresholdPct ?? 40
+        },
+        null
+      )
+    );
+  }
+
+  if (interimEnabled) {
+    parts.push(
+      describeInterimRun(weather, {
+        tempThreshold: settings.autoInterimTempThresholdC ?? 28,
+        sunThresholdWm2: settings.autoInterimSunThresholdWm2 ?? 600,
+        rainCurrentThreshold: settings.autoInterimRainCurrentThresholdMm ?? 0.05,
+        rainForecastThreshold: settings.autoInterimRainForecastThresholdPct ?? 30
+      })
+    );
+  }
+
+  return parts.join(' ');
 }
 
 export default function Dashboard({ status, settings, busy, onStart, onStop, onEmergencyStop }) {
