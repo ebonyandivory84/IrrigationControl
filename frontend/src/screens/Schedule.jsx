@@ -1,4 +1,5 @@
 import GlassCard from '../components/GlassCard';
+import { WarningIcon } from '../components/icons';
 
 const WEEKDAYS = [
   { key: 'Monday', label: 'Mo' },
@@ -10,10 +11,15 @@ const WEEKDAYS = [
   { key: 'Sunday', label: 'So' },
 ];
 
-export default function Schedule({ settings, onUpdate }) {
+export default function Schedule({ settings, onUpdate, status }) {
   if (!settings) return <div className="loading-state">Lade Einstellungen …</div>;
 
   const minutes = Math.round((settings.cycleDurationSec || 600) / 60);
+
+  const zones = (status && status.zones) || [];
+  const maxTotalRuntimeSec = settings.maxTotalRuntimeSec || 5400;
+  const estimatedTotalSec = zones.length * (settings.cycleDurationSec || 600);
+  const runtimeExceeded = zones.length > 0 && estimatedTotalSec > maxTotalRuntimeSec;
 
   return (
     <>
@@ -22,6 +28,13 @@ export default function Schedule({ settings, onUpdate }) {
       {settings.automaticMode && (
         <div className="stale-banner">
           Automatik-Modus ist aktiv — der Zeitplan wird derzeit ignoriert.
+        </div>
+      )}
+
+      {runtimeExceeded && (
+        <div className="stale-banner">
+          <WarningIcon width={18} height={18} />
+          Geschätzte Gesamtlaufzeit (~{Math.round(estimatedTotalSec / 60)} min bei {zones.length} Zonen) überschreitet den Sicherheits-Timeout — die Bewässerung wird vorzeitig abgebrochen.
         </div>
       )}
 

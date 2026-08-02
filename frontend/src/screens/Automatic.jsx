@@ -1,14 +1,27 @@
 import GlassCard from '../components/GlassCard';
+import { WarningIcon } from '../components/icons';
 
-export default function Automatic({ settings, onUpdate }) {
+export default function Automatic({ settings, onUpdate, status }) {
   if (!settings) return <div className="loading-state">Lade Einstellungen …</div>;
 
   const maxRuns = settings.autoMaxRunsPerDay || 1;
   const cycleMinutes = Math.round((settings.cycleDurationSec || 600) / 60);
 
+  const zones = (status && status.zones) || [];
+  const maxTotalRuntimeSec = settings.maxTotalRuntimeSec || 5400;
+  const estimatedTotalSec = zones.length * (settings.cycleDurationSec || 600);
+  const runtimeExceeded = zones.length > 0 && estimatedTotalSec > maxTotalRuntimeSec;
+
   return (
     <>
       <h1 className="page-title">Automatik</h1>
+
+      {runtimeExceeded && (
+        <div className="stale-banner">
+          <WarningIcon width={18} height={18} />
+          Geschätzte Gesamtlaufzeit (~{Math.round(estimatedTotalSec / 60)} min bei {zones.length} Zonen) überschreitet den Sicherheits-Timeout — die Bewässerung wird vorzeitig abgebrochen.
+        </div>
+      )}
 
       <GlassCard>
         <div className="field-row">

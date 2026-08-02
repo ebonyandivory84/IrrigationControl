@@ -111,8 +111,8 @@ export default function App() {
             onEmergencyStop={handleEmergencyStop}
           />
         )}
-        {tab === 'schedule' && <Schedule settings={settings} onUpdate={updateSettings} />}
-        {tab === 'automatic' && <Automatic settings={settings} onUpdate={updateSettings} />}
+        {tab === 'schedule' && <Schedule settings={settings} onUpdate={updateSettings} status={status} />}
+        {tab === 'automatic' && <Automatic settings={settings} onUpdate={updateSettings} status={status} />}
         {tab === 'settings' && (
           <Settings settings={settings} onUpdate={updateSettings} status={status} onRenameZone={handleRenameZone} />
         )}

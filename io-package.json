@@ -9,8 +9,12 @@
       "en": "Automated lawn irrigation with weather logic and a dedicated WebUI",
       "de": "Automatisierte Rasenbewässerung mit Wetter-Logik und eigener WebUI"
     },
-    "version": "0.3.2",
+    "version": "0.3.3",
     "news": {
+      "0.3.3": {
+        "en": "Safety timeout warning (cycle duration × zone count vs. runtime limit) now also shown on the Schedule and Automatic pages, not just Settings",
+        "de": "Sicherheits-Timeout-Warnung (Zyklusdauer × Zonenzahl vs. Laufzeitgrenze) erscheint jetzt auch auf den Seiten Zeitplan und Automatik, nicht nur unter Einstellungen"
+      },
       "0.3.2": {
         "en": "Zones card is now a compact 2-column grid; forecast solar radiation shown in kWh/m² instead of MJ/m²",
         "de": "Zonen-Card jetzt als kompaktes 2-Spalten-Raster; Sonnenstrahlung-Vorhersage in kWh/m² statt MJ/m²"
