@@ -9,8 +9,12 @@
       "en": "Automated lawn irrigation with weather logic and a dedicated WebUI",
       "de": "Automatisierte Rasenbewässerung mit Wetter-Logik und eigener WebUI"
     },
-    "version": "0.3.0",
+    "version": "0.3.1",
     "news": {
+      "0.3.1": {
+        "en": "Fixed \"Open WebUI\" link in the admin instance list (wrong placeholder syntax); weather card now explains in plain text which decision the automatic mode makes based on current conditions and forecast",
+        "de": "\"WebUI öffnen\"-Link in der Admin-Instanzübersicht repariert (falsche Platzhalter-Syntax); Wetter-Card erklärt jetzt in Textform, welche Entscheidung die Automatik anhand von aktuellen Werten und Vorhersage trifft"
+      },
       "0.3.0": {
         "en": "Safety timeout for total runtime is now a live setting (no adapter restart needed) with an overrun warning in the WebUI; weather forecast extended with max temperature, rain amount and solar radiation sum",
         "de": "Sicherheits-Timeout für die Gesamtlaufzeit ist jetzt eine Live-Einstellung (kein Adapter-Neustart nötig) mit Überschreitungs-Warnung in der WebUI; Wettervorhersage um Maximaltemperatur, Niederschlagsmenge und Sonnenstrahlung erweitert"
@@ -36,7 +40,7 @@
     "extIcon": "https://raw.githubusercontent.com/ebonyandivory84/IrrigationControl/main/admin/irrigation-control.png",
     "localLinks": {
       "WebUI": {
-        "link": "http://%ip%:%native.httpPort%/",
+        "link": "http://%ip%:%native_httpPort%/",
         "name": "Bewässerung WebUI"
       }
     },

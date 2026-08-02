@@ -5,6 +5,41 @@ import { formatClock, formatDateTime, TRIGGER_LABELS } from '../utils';
 const RADIUS = 40;
 const CIRCUMFERENCE = 2 * Math.PI * RADIUS;
 
+function buildAutomatikNote(settings, weather) {
+  if (!settings || !settings.automaticMode) {
+    return 'Automatik ist deaktiviert – die Bewässerung folgt dem festen Zeitplan, unabhängig von der Wettervorhersage.';
+  }
+  if (!weather || weather.stale) {
+    return 'Wetterdaten sind veraltet – die Automatik pausiert Auslösungen, bis wieder aktuelle Daten vorliegen.';
+  }
+
+  const rainCurrentThreshold = settings.autoRainCurrentThresholdMm ?? 0.15;
+  const rainForecastThreshold = settings.autoRainForecastThresholdPct ?? 50;
+  const morningTime = settings.autoMorningTime || '04:00';
+  const eveningTime = settings.autoEveningTime || '22:00';
+  const maxRuns = settings.autoMaxRunsPerDay || 1;
+
+  const rainNow = weather.rainCurrentMm != null && weather.rainCurrentMm >= rainCurrentThreshold;
+  const rainSoon = weather.rainForecastPct != null && weather.rainForecastPct >= rainForecastThreshold;
+
+  if (rainNow) {
+    return `Keine Bewässerung geplant – aktueller Regen (${weather.rainCurrentMm}mm) liegt über dem Schwellenwert von ${rainCurrentThreshold}mm.`;
+  }
+  if (rainSoon) {
+    return `Morgenlauf (${morningTime} Uhr) wird ausgesetzt – Regenwahrscheinlichkeit (${weather.rainForecastPct}%) liegt über dem Schwellenwert von ${rainForecastThreshold}%. Bessert sich die Vorhersage im Tagesverlauf, folgt ein Nachtrag; andernfalls prüft ein Abend-Fallback um ${eveningTime} Uhr den tatsächlich gefallenen Regen.`;
+  }
+
+  const runs = [`Morgenlauf um ${morningTime} Uhr`];
+  if (maxRuns >= 2) runs.push(`Abendlauf um ${eveningTime} Uhr`);
+  const rainNowText = weather.rainCurrentMm != null ? `${weather.rainCurrentMm}mm` : 'unbekannt';
+  const rainSoonText = weather.rainForecastPct != null ? `${weather.rainForecastPct}%` : 'unbekannt';
+  let note = `Bewässerung geplant: ${runs.join(' und ')} – aktueller Regen (${rainNowText}) liegt unter dem Schwellenwert (${rainCurrentThreshold}mm), Regenwahrscheinlichkeit (${rainSoonText}) unter dem Schwellenwert (${rainForecastThreshold}%).`;
+  if (maxRuns >= 3) {
+    note += ` Zusätzlich eine hitzegetriggerte Zwischenwässerung, sobald ${settings.autoTempThresholdC ?? 28}°C oder ${settings.autoSunThresholdWm2 ?? 600} W/m² überschritten werden.`;
+  }
+  return note;
+}
+
 export default function Dashboard({ status, settings, busy, onStart, onStop, onEmergencyStop }) {
   if (!status) return <div className="loading-state">Lade Status …</div>;
 
@@ -145,6 +180,7 @@ export default function Dashboard({ status, settings, busy, onStart, onStop, onE
               <span>Sonnenstrahlung</span>
             </div>
           </div>
+          <p className="weather-note">{buildAutomatikNote(settings, status.weather)}</p>
         </GlassCard>
       )}
 

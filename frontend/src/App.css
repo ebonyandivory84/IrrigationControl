@@ -621,3 +621,14 @@
   grid-template-columns: repeat(2, 1fr);
   gap: 10px;
 }
+
+.weather-note {
+  margin-top: 14px;
+  padding: 12px 14px;
+  border-radius: 14px;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid var(--glass-border);
+  font-size: 12.5px;
+  line-height: 1.5;
+  color: var(--slate-muted);
+}
