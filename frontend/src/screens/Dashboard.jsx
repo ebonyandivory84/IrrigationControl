@@ -104,6 +104,7 @@ export default function Dashboard({ status, settings, busy, onStart, onStop, onE
           <div className="card-header">
             <span className="card-title">Wetter</span>
           </div>
+          <p className="card-sub">Aktuell</p>
           <div className="weather-grid">
             <div className="metric">
               <ThermoIcon />
@@ -117,8 +118,31 @@ export default function Dashboard({ status, settings, busy, onStart, onStop, onE
             </div>
             <div className="metric">
               <RainIcon />
+              <strong>{status.weather.rainCurrentMm != null ? `${status.weather.rainCurrentMm}mm` : '—'}</strong>
+              <span>Regen aktuell</span>
+            </div>
+          </div>
+          <p className="card-sub" style={{ marginTop: 16 }}>Vorhersage</p>
+          <div className="weather-grid-2">
+            <div className="metric">
+              <RainIcon />
               <strong>{status.weather.rainForecastPct != null ? `${status.weather.rainForecastPct}%` : '—'}</strong>
               <span>Regen morgen</span>
+            </div>
+            <div className="metric">
+              <ThermoIcon />
+              <strong>{status.weather.tempForecastMaxC != null ? `${status.weather.tempForecastMaxC}°` : '—'}</strong>
+              <span>Max. Temperatur</span>
+            </div>
+            <div className="metric">
+              <RainIcon />
+              <strong>{status.weather.rainForecastMm != null ? `${status.weather.rainForecastMm}mm` : '—'}</strong>
+              <span>Niederschlag</span>
+            </div>
+            <div className="metric">
+              <SunIcon />
+              <strong>{status.weather.sunForecastMJm2 != null ? `${status.weather.sunForecastMJm2}MJ/m²` : '—'}</strong>
+              <span>Sonnenstrahlung</span>
             </div>
           </div>
         </GlassCard>

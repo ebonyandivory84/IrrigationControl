@@ -33,13 +33,6 @@
       "xs": 12,
       "sm": 6
     },
-    "maxTotalRuntimeSec": {
-      "type": "number",
-      "label": "Sicherheits-Timeout Gesamtlauf (s)",
-      "newLine": true,
-      "xs": 12,
-      "sm": 6
-    },
 
     "_headerValves": {
       "type": "header",

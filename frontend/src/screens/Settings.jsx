@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import GlassCard from '../components/GlassCard';
+import { WarningIcon } from '../components/icons';
 import { api } from '../api';
 
 export default function Settings({ settings, onUpdate, status, onRenameZone }) {
@@ -27,6 +28,10 @@ export default function Settings({ settings, onUpdate, status, onRenameZone }) {
 
   const zones = (status && status.zones) || [];
   const zoneNames = (status && status.zoneNames) || {};
+
+  const maxTotalRuntimeSec = settings.maxTotalRuntimeSec || 5400;
+  const estimatedTotalSec = zones.length * (settings.cycleDurationSec || 600);
+  const runtimeExceeded = estimatedTotalSec > maxTotalRuntimeSec;
 
   const commitZoneName = (index) => {
     const draft = zoneDrafts[index];
@@ -94,6 +99,33 @@ export default function Settings({ settings, onUpdate, status, onRenameZone }) {
             <span>{settings.backgroundDimPct ?? 40}%</span>
             <span>dunkel</span>
           </div>
+        </div>
+      </GlassCard>
+
+      <GlassCard>
+        <div className="card-header">
+          <span className="card-title">Sicherheit</span>
+        </div>
+        {runtimeExceeded && (
+          <div className="stale-banner">
+            <WarningIcon width={18} height={18} />
+            Geschätzte Gesamtlaufzeit (~{Math.round(estimatedTotalSec / 60)} min bei {zones.length} Zonen) überschreitet den Sicherheits-Timeout — die Bewässerung wird vorzeitig abgebrochen.
+          </div>
+        )}
+        <div className="field">
+          <span className="field-label">Sicherheits-Timeout Gesamtlauf</span>
+          <input
+            type="number"
+            className="input"
+            min="1"
+            max="240"
+            value={Math.round(maxTotalRuntimeSec / 60)}
+            onChange={(e) => {
+              const m = Math.max(1, Number(e.target.value) || 1);
+              onUpdate({ maxTotalRuntimeSec: m * 60 }, { debounceMs: 500 });
+            }}
+          />
+          <p className="field-hint">Maximale Gesamtlaufzeit pro Bewässerung — Sicherheitsabschaltung, falls z. B. ein Ventil hängen bleibt.</p>
         </div>
       </GlassCard>
 

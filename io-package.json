@@ -9,8 +9,12 @@
       "en": "Automated lawn irrigation with weather logic and a dedicated WebUI",
       "de": "Automatisierte Rasenbewässerung mit Wetter-Logik und eigener WebUI"
     },
-    "version": "0.2.0",
+    "version": "0.3.0",
     "news": {
+      "0.3.0": {
+        "en": "Safety timeout for total runtime is now a live setting (no adapter restart needed) with an overrun warning in the WebUI; weather forecast extended with max temperature, rain amount and solar radiation sum",
+        "de": "Sicherheits-Timeout für die Gesamtlaufzeit ist jetzt eine Live-Einstellung (kein Adapter-Neustart nötig) mit Überschreitungs-Warnung in der WebUI; Wettervorhersage um Maximaltemperatur, Niederschlagsmenge und Sonnenstrahlung erweitert"
+      },
       "0.2.0": {
         "en": "Smarter automatic mode: hourly forecast, catch-up run forecast improves, evening rain fallback, optional third heat-triggered run; UI centering fix",
         "de": "Automatik smarter: stündliche Vorhersage, Nachtrag bei besserer Prognose, Abend-Regen-Fallback, optionale dritte hitzegetriggerte Zwischenwässerung; UI-Zentrierung korrigiert"
@@ -72,8 +76,7 @@
     "weatherStaleMinutes": 60,
     "latitude": 49.2354,
     "longitude": 6.9969,
-    "httpPort": 8112,
-    "maxTotalRuntimeSec": 5400
+    "httpPort": 8112
   },
   "objects": [],
   "instanceObjects": []
