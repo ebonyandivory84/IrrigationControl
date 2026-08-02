@@ -138,6 +138,10 @@ export default function Dashboard({ status, settings, busy, onStart, onStop, onE
   if (status.emergencyStopped) badge = { cls: 'badge-danger', text: 'Notaus' };
   else if (status.running) badge = { cls: 'badge-running', text: 'Aktiv' };
 
+  const modeBadge = settings && settings.automaticMode
+    ? { cls: 'badge-running', text: 'Automatik' }
+    : { cls: 'badge-idle', text: 'Manuell' };
+
   return (
     <>
       <h1 className="page-title">Status</h1>
@@ -182,7 +186,10 @@ export default function Dashboard({ status, settings, busy, onStart, onStop, onE
             </div>
           </div>
           <div className="status-info">
-            <span className={`badge ${badge.cls}`}>{badge.text}</span>
+            <div className="status-badges">
+              <span className={`badge ${badge.cls}`}>{badge.text}</span>
+              <span className={`badge ${modeBadge.cls}`}>{modeBadge.text}</span>
+            </div>
             <h2 style={{ marginTop: 8 }}>
               {status.running ? currentZoneName || `Zone ${status.currentZone}` : 'Keine aktive Zone'}
             </h2>

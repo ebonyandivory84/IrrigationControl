@@ -222,6 +222,12 @@
   letter-spacing: 0.04em;
 }
 
+.status-badges {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+
 .badge-idle {
   background: rgba(255, 255, 255, 0.1);
   color: var(--slate-muted);

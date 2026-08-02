@@ -9,8 +9,12 @@
       "en": "Automated lawn irrigation with weather logic and a dedicated WebUI",
       "de": "Automatisierte Rasenbewässerung mit Wetter-Logik und eigener WebUI"
     },
-    "version": "0.4.0",
+    "version": "0.4.1",
     "news": {
+      "0.4.1": {
+        "en": "Dashboard status overview now shows a badge indicating whether Automatic or Manual mode is currently active",
+        "de": "Die Statusübersicht auf dem Dashboard zeigt jetzt ein Badge, ob Automatik- oder Manuell-Modus aktiv ist"
+      },
       "0.4.0": {
         "en": "Automatic mode now has three independently enabled runs (Morning/Evening/Interim), each with its own complete threshold set (temperature, solar radiation, current rain, rain forecast) instead of one shared set for all runs; the Automatic page warns when a later run's thresholds are contradictory (easier to trigger) than an earlier enabled run",
         "de": "Automatik-Modus hat jetzt drei unabhängig aktivierbare Läufe (Morgen/Abend/Zwischenwässerung), jeweils mit eigenem vollständigem Schwellenwert-Satz (Temperatur, Sonneneinstrahlung, aktueller Regen, Regenvorhersage) statt einem gemeinsamen Satz für alle Läufe; die Automatik-Seite warnt, wenn die Schwellenwerte eines späteren Laufs widersprüchlich sind (leichter auslösen) als bei einem früheren aktivierten Lauf"

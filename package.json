@@ -1,6 +1,6 @@
 {
   "name": "iobroker.irrigation-control",
-  "version": "0.4.0",
+  "version": "0.4.1",
   "description": "Automatisierte Rasenbewässerung mit Wetter-Logik und eigener WebUI",
   "author": "Sebastian Holländer",
   "license": "MIT",
