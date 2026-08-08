@@ -37,6 +37,7 @@
 - Kein automatischer Zugriff auf Produktions-Ventile/Pumpe während der Entwicklung ohne Rücksprache
 
 ## Wichtige Entscheidungen (Changelog)
+- `2026-08-08` — `www/` (Frontend-Build) nicht mehr in `.gitignore`, sondern eingecheckt. Ursache: ioBroker installiert den Adapter per `npm install <github-url>` direkt aus dem Git-Repo — dabei zählt nur, was im Repo committed ist, `.npmignore`/`package.json#files` greifen hier nicht. War `www/` nur lokal vorhanden (gitignored), fehlte es nach jedem Reinstall/Update komplett (führte zu `ENOENT .../www/index.html`). Konsequenz: vor jedem Push `npm run build:frontend` ausführen und den aktualisierten `www/`-Stand mitcommitten, sonst deployt ein veraltetes Frontend.
 - `2026-08-02` — Zonen-Modell geklärt: physische Zonen über Gardena-Verteiler, nicht Soak-Cycle. Eine globale Zyklusdauer für alle Zonen (nicht pro Zone). Wochentage als 7 Einzel-Checkboxen, global für beide Verteiler.
 - `2026-08-02` — Backend bewusst in plain JS statt TypeScript (kleiner Scope, kein Build-Schritt für den Adapter selbst nötig).
 - `2026-08-02` — Sicherheits-Fix vor Deploy: `settings.scheduleEnabled` als expliziter Zeitplan-Ein/Aus-Schalter ergänzt (Default `false`). Ohne diesen Schalter wären bei Werks-Defaults (alle Wochentage `true`, Startzeit 05:00) nach dem Deploy sofort echte Läufe erfolgt — Verstoß gegen "kein automatischer Zugriff auf Produktions-Ventile ohne Rücksprache".
